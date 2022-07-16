@@ -1,23 +1,23 @@
 package main
 
 import (
-	"net/http"
+	"os"
 
-	"github.com/gorilla/mux"
-	"github.com/mitchelldyer01/characters-5e/pkg/controllers"
-	"github.com/mitchelldyer01/characters-5e/pkg/db"
+	"github.com/common-nighthawk/go-figure"
+	"github.com/sirupsen/logrus"
 )
 
+var logo = figure.NewColorFigure("D&D 5e", "", "green", true)
+
 func main() {
-	repo := db.New()
+	logo.Print()
 
-	c := controllers.CharacterController{DB: repo.DB}
+	rootCmd := NewRootCmd()
+	rootCmd.SetHelpCommand(NewHelpCmd())
 
-	r := mux.NewRouter()
-	r.HandleFunc("/characterl", c.New).Methods("POST")
-	r.HandleFunc("/character/{id}", c.Get).Methods("GET")
-	r.HandleFunc("/charater", c.Update).Methods("PUT")
-
-	http.Handle("/", r)
-	http.ListenAndServe(":8080", r)
+	err := rootCmd.Execute()
+	if err != nil {
+		logrus.Error(err)
+		os.Exit(-1)
+	}
 }

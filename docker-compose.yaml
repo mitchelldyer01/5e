@@ -13,7 +13,7 @@ services:
       - 5432:5432
     networks:
       - local
-  characters-5e:
+  5e:
     container_name: svc
     restart: always
     build:

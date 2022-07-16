@@ -3,7 +3,6 @@ package db
 import (
 	"os"
 
-	"github.com/mitchelldyer01/characters-5e/pkg/models"
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -29,10 +28,6 @@ func Init() *gorm.DB {
 	if err != nil {
 		logrus.Fatalf("Failed connecting to DB: %s", err)
 	}
-
-	db.AutoMigrate(
-		&models.Character{},
-	)
 
 	return db
 }

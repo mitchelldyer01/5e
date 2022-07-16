@@ -6,13 +6,25 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/mitchelldyer01/characters-5e/pkg/models"
+	"github.com/mitchelldyer01/5e/pkg/models"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
 
 type CharacterController struct {
-	DB *gorm.DB
+	DB     *gorm.DB
+	Router *mux.Router
+}
+
+func NewCharacterController(DB *gorm.DB, Router *mux.Router) {
+	c := &CharacterController{DB: DB, Router: Router}
+	c.Router.HandleFunc("/character", c.New).Methods("POST")
+	c.Router.HandleFunc("/character/{id}", c.Get).Methods("GET")
+	c.Router.HandleFunc("/charater", c.Update).Methods("PUT")
+	logrus.Println("CharacterController: Initialized \u2705")
+
+	DB.AutoMigrate(&models.Character{})
+	logrus.Println("CharacterModel: Seeded \u2705")
 }
 
 func (c *CharacterController) New(w http.ResponseWriter, r *http.Request) {
