@@ -2,8 +2,6 @@ package controllers
 
 import (
 	"net/http"
-
-	"gorm.io/gorm"
 )
 
 type Controller interface {
@@ -12,9 +10,7 @@ type Controller interface {
 	Update(w http.ResponseWriter, r *http.Request)
 }
 
-type Default struct {
-	DB *gorm.DB
-}
+type Default struct{}
 
 func (d *Default) New(w http.ResponseWriter, r *http.Request)    {}
 func (d *Default) Get(w http.ResponseWriter, r *http.Request)    {}
