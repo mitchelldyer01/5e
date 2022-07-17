@@ -29,6 +29,7 @@ func StartPlayerController(DB *gorm.DB, Router *mux.Router) {
 
 func (p *PlayerController) Register(w http.ResponseWriter, r *http.Request) {
 	o := &models.Player{}
+
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
 

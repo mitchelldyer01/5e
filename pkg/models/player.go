@@ -1,10 +1,12 @@
 package models
 
 import (
+	"errors"
 	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -23,6 +25,11 @@ type Player struct {
 }
 
 func (p *Player) Insert(db *gorm.DB) error {
+	if len(p.Password) < 2 {
+		logrus.Error("Invalid password: %s")
+		return errors.New("invalid password")
+	}
+
 	err := p.hashPassword()
 	if err != nil {
 		return err
