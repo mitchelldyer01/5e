@@ -36,7 +36,7 @@ func Authenticate(h http.Handler) http.Handler {
 		tk := &models.Token{}
 
 		token, err := jwt.ParseWithClaims(t, tk, func(token *jwt.Token) (interface{}, error) {
-			return []byte(os.Getenv("token_password")), nil
+			return []byte(os.Getenv("AUTH_KEY")), nil
 		})
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)

@@ -100,7 +100,7 @@ func (p *Player) generateToken() error {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, t)
 
-	signed, err := token.SignedString([]byte(os.Getenv("token_password")))
+	signed, err := token.SignedString([]byte(os.Getenv("AUTH_KEY")))
 	if err != nil {
 		return err
 	}

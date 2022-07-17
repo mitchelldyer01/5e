@@ -61,6 +61,7 @@ Supported controllers:
 - spell
 - player
 - action
+- feature
 
 I.E., `5e character` starts the REST API for `character`
 
