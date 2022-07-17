@@ -13,6 +13,7 @@ make up
 ## Usage
 
 Set `${DB_URL}` for a valid postgres DB
+Set `${AUTH_KEY}` for the key signing auth tokens
 
 Run just the raw binary `5e` for monolithic mode:
 
@@ -56,8 +57,11 @@ time="2022-07-16T18:35:06Z" level=info msg="CharacterModel: Seeded ✅"
 
 Supported controllers:
 
-- characters
-- spells
-- players
+- character
+- spell
+- player
+- action
+
+I.E., `5e character` starts the REST API for `character`
 
 [docker]: https://www.docker.com/products/docker-desktop/

@@ -12,25 +12,25 @@ import (
 	"gorm.io/gorm"
 )
 
-type LearnedController struct {
+type LearnedSpellController struct {
 	DB     *gorm.DB
 	Router *mux.Router
 }
 
-func StartLearnedController(DB *gorm.DB, Router *mux.Router) {
-	l := &LearnedController{DB: DB, Router: Router}
+func StartLearnedSpellController(DB *gorm.DB, Router *mux.Router) {
+	l := &LearnedSpellController{DB: DB, Router: Router}
 	l.Router.Use(middleware.Authenticate)
-	l.Router.HandleFunc("/learned", l.New).Methods("POST")
+	l.Router.HandleFunc("/learned/spell", l.New).Methods("POST")
 	l.Router.HandleFunc("/learned/spell/{sid}/character/{cid}", l.Get).Methods("GET")
-	l.Router.HandleFunc("/learned", l.Update).Methods("PUT")
-	logrus.Println("LearnedController: Initialized \u2705")
+	l.Router.HandleFunc("/learned/spell", l.Update).Methods("PUT")
+	logrus.Println("LearnedSpellController: Initialized \u2705")
 
-	DB.AutoMigrate(&models.Learned{})
-	logrus.Println("LearnedModel: Seeded \u2705")
+	DB.AutoMigrate(&models.LearnedSpell{})
+	logrus.Println("LearnedSpellModel: Seeded \u2705")
 }
 
-func (l *LearnedController) New(w http.ResponseWriter, r *http.Request) {
-	o := &models.Learned{}
+func (l *LearnedSpellController) New(w http.ResponseWriter, r *http.Request) {
+	o := &models.LearnedSpell{}
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
 
@@ -49,8 +49,8 @@ func (l *LearnedController) New(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode("Created")
 }
 
-func (l *LearnedController) Get(w http.ResponseWriter, r *http.Request) {
-	o := &models.Learned{}
+func (l *LearnedSpellController) Get(w http.ResponseWriter, r *http.Request) {
+	o := &models.LearnedSpell{}
 
 	vars := mux.Vars(r)
 	sid, err := strconv.Atoi(vars["sid"])
@@ -77,8 +77,8 @@ func (l *LearnedController) Get(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(o)
 }
 
-func (l *LearnedController) Update(w http.ResponseWriter, r *http.Request) {
-	o := &models.Learned{}
+func (l *LearnedSpellController) Update(w http.ResponseWriter, r *http.Request) {
+	o := &models.LearnedSpell{}
 
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()

@@ -26,7 +26,7 @@ func NewRootCmd() *cobra.Command {
 			}
 			return cobra.OnlyValidArgs(cmd, args)
 		},
-		ValidArgs: []string{"characters", "spells", "players"},
+		ValidArgs: []string{"character", "spell", "player", "action", "feature"},
 	}
 }
 
@@ -39,20 +39,30 @@ func RootCmd(cmd *cobra.Command, args []string) error {
 		logrus.Println("Initializing all controllers...")
 		controllers.StartCharacterController(repo.DB, r)
 		controllers.StartSpellController(repo.DB, r)
-		controllers.StartLearnedController(repo.DB, r)
+		controllers.StartLearnedSpellController(repo.DB, r)
 		controllers.StartPlayerController(repo.DB, r)
+		controllers.StartActionController(repo.DB, r)
+		controllers.StartLearnedActionController(repo.DB, r)
+		controllers.StartFeatureController(repo.DB, r)
+		controllers.StartLearnedFeatureController(repo.DB, r)
 	}
 
 	for _, arg := range args {
 		logrus.Printf("Initializing %s controller...", arg)
 		switch arg {
-		case "characters":
+		case "character":
 			controllers.StartCharacterController(repo.DB, r)
-		case "spells":
+		case "spell":
 			controllers.StartSpellController(repo.DB, r)
-			controllers.StartLearnedController(repo.DB, r)
+			controllers.StartLearnedSpellController(repo.DB, r)
 		case "player":
 			controllers.StartPlayerController(repo.DB, r)
+		case "action":
+			controllers.StartActionController(repo.DB, r)
+			controllers.StartLearnedActionController(repo.DB, r)
+		case "feature":
+			controllers.StartFeatureController(repo.DB, r)
+			controllers.StartLearnedFeatureController(repo.DB, r)
 		}
 	}
 
