@@ -15,7 +15,7 @@ func NewRootCmd() *cobra.Command {
 		Use:   "5e",
 		Short: "A suite of microservices for managing 5e data",
 		Long: `
-		5e: A suite of microservices for manaing 5e data
+		5e: A suite of microservices for managing 5e data
 
 		5e is a set of REST APIs handling data for D&D 5th Edition.
 		`,
@@ -26,7 +26,7 @@ func NewRootCmd() *cobra.Command {
 			}
 			return cobra.OnlyValidArgs(cmd, args)
 		},
-		ValidArgs: []string{"characters", "spells"},
+		ValidArgs: []string{"characters", "spells", "players"},
 	}
 }
 
@@ -37,20 +37,22 @@ func RootCmd(cmd *cobra.Command, args []string) error {
 
 	if len(args) < 1 {
 		logrus.Println("Initializing all controllers...")
-		controllers.NewCharacterController(repo.DB, r)
-		controllers.NewSpellController(repo.DB, r)
-		controllers.NewLearnedController(repo.DB, r)
-
+		controllers.StartCharacterController(repo.DB, r)
+		controllers.StartSpellController(repo.DB, r)
+		controllers.StartLearnedController(repo.DB, r)
+		controllers.StartPlayerController(repo.DB, r)
 	}
 
 	for _, arg := range args {
 		logrus.Printf("Initializing %s controller...", arg)
 		switch arg {
 		case "characters":
-			controllers.NewCharacterController(repo.DB, r)
+			controllers.StartCharacterController(repo.DB, r)
 		case "spells":
-			controllers.NewSpellController(repo.DB, r)
-			controllers.NewLearnedController(repo.DB, r)
+			controllers.StartSpellController(repo.DB, r)
+			controllers.StartLearnedController(repo.DB, r)
+		case "player":
+			controllers.StartPlayerController(repo.DB, r)
 		}
 	}
 

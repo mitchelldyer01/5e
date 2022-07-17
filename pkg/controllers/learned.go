@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/mitchelldyer01/5e/pkg/middleware"
 	"github.com/mitchelldyer01/5e/pkg/models"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -16,8 +17,9 @@ type LearnedController struct {
 	Router *mux.Router
 }
 
-func NewLearnedController(DB *gorm.DB, Router *mux.Router) {
+func StartLearnedController(DB *gorm.DB, Router *mux.Router) {
 	l := &LearnedController{DB: DB, Router: Router}
+	l.Router.Use(middleware.Authenticate)
 	l.Router.HandleFunc("/learned", l.New).Methods("POST")
 	l.Router.HandleFunc("/learned/spell/{sid}/character/{cid}", l.Get).Methods("GET")
 	l.Router.HandleFunc("/learned", l.Update).Methods("PUT")

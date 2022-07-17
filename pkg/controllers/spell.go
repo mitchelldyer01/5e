@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/mitchelldyer01/5e/pkg/middleware"
 	"github.com/mitchelldyer01/5e/pkg/models"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -16,11 +17,12 @@ type SpellController struct {
 	Router *mux.Router
 }
 
-func NewSpellController(DB *gorm.DB, Router *mux.Router) {
-	c := &SpellController{DB: DB, Router: Router}
-	c.Router.HandleFunc("/spell", c.New).Methods("POST")
-	c.Router.HandleFunc("/spell/{id}", c.Get).Methods("GET")
-	c.Router.HandleFunc("/spell", c.Update).Methods("PUT")
+func StartSpellController(DB *gorm.DB, Router *mux.Router) {
+	s := &SpellController{DB: DB, Router: Router}
+	s.Router.Use(middleware.Authenticate)
+	s.Router.HandleFunc("/spell", s.New).Methods("POST")
+	s.Router.HandleFunc("/spell/{id}", s.Get).Methods("GET")
+	s.Router.HandleFunc("/spell", s.Update).Methods("PUT")
 	logrus.Println("SpellController: Initialized \u2705")
 
 	DB.AutoMigrate(&models.Spell{})

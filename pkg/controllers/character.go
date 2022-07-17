@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/mitchelldyer01/5e/pkg/middleware"
 	"github.com/mitchelldyer01/5e/pkg/models"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -16,8 +17,9 @@ type CharacterController struct {
 	Router *mux.Router
 }
 
-func NewCharacterController(DB *gorm.DB, Router *mux.Router) {
+func StartCharacterController(DB *gorm.DB, Router *mux.Router) {
 	c := &CharacterController{DB: DB, Router: Router}
+	c.Router.Use(middleware.Authenticate)
 	c.Router.HandleFunc("/character", c.New).Methods("POST")
 	c.Router.HandleFunc("/character/{id}", c.Get).Methods("GET")
 	c.Router.HandleFunc("/charater", c.Update).Methods("PUT")
@@ -57,7 +59,7 @@ func (c *CharacterController) Get(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		logrus.Errorf("Failed parsing ID from string to int: %s", err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Failed parsing ID from string to int", http.StatusBadRequest)
 		return
 	}
 

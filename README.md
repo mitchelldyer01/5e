@@ -58,5 +58,6 @@ Supported controllers:
 
 - characters
 - spells
+- players
 
 [docker]: https://www.docker.com/products/docker-desktop/
