@@ -1,5 +1,26 @@
 # 5e
 
+A collection of microservices for orchestrating 
+a game of Dungeons & Dragons 5th Edition.
+
+Supported controllers:
+
+- character
+  - supports objects with data filling out a character sheet
+- spell
+  - supports atomic spells
+  - supports objects linking spells to a character
+- player
+  - supports JWT auth
+- action
+  - supports atomic actions
+  - supports objects linking actions to a character
+- feature
+  - supports atomic features
+  - supports objects linking features to a character
+
+I.E., `5e character` starts the REST API for `character`
+
 ## Dependencies
 
 - [docker][]
@@ -54,15 +75,5 @@ time="2022-07-16T18:35:06Z" level=info msg="Initializing character controller...
 time="2022-07-16T18:35:06Z" level=info msg="CharacterController: Initialized ✅" 
 time="2022-07-16T18:35:06Z" level=info msg="CharacterModel: Seeded ✅"
 ```
-
-Supported controllers:
-
-- character
-- spell
-- player
-- action
-- feature
-
-I.E., `5e character` starts the REST API for `character`
 
 [docker]: https://www.docker.com/products/docker-desktop/
